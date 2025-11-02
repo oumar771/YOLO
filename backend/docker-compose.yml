@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Backend API
+  api:
+    build: .
+    container_name: yolo-face-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+      - ./trained_models:/app/trained_models
+      - ./datasets:/app/datasets
+    environment:
+      - DATABASE_URL=sqlite:///./storage/attendance.db
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=True
+      - ENVIRONMENT=development
+    restart: unless-stopped
+    networks:
+      - yolo-network
+
+  # Base de données PostgreSQL (optionnel, remplace SQLite)
+  # postgres:
+  #   image: postgres:15
+  #   container_name: yolo-postgres
+  #   environment:
+  #     POSTGRES_DB: attendance_db
+  #     POSTGRES_USER: yolo_user
+  #     POSTGRES_PASSWORD: yolo_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - yolo-network
+
+networks:
+  yolo-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
