@@ -1,0 +1,40 @@
+# Configuration Apache pour l'API YOLO
+# Redirige toutes les requêtes vers index.php
+
+RewriteEngine On
+
+# Permettre les requêtes CORS
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+
+# Rediriger toutes les requêtes vers index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Bloquer l'accès direct aux fichiers sensibles
+<FilesMatch "^(config\.php|database\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Activer la compression gzip
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+</IfModule>
+
+# Cache control pour les réponses API
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</IfModule>
+
+# Sécurité: Bloquer l'accès aux fichiers cachés
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

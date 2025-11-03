@@ -1,0 +1,27 @@
+# Fichiers de configuration sensibles (ne pas commiter en production)
+# config/config.php
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Cache PHP
+*.cache
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*~
